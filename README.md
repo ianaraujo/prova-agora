@@ -97,3 +97,7 @@ E coloque no navegador [http://localhost:3000](http://localhost:3000) para abrir
 ### O site
 
 A primeira seção do site contém cards com informações sobre as conexões de Jean Paul Prates. Logo em seguida há um formulário para preencher que adiciona dados ao banco de dados. Para adicionar e ver um novo stakeholder, preencha o formulário (deve aparecer uma mensagem de sucesso) e recarregue a página.
+
+## Questão 2
+
+Essa questão foi toda feita em um Jupyter Notebook.
