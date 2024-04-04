@@ -1,55 +1,100 @@
-const express = require('express')
-const app = express()
-const port = 3001
+const express = require('express');
+const cors = require('cors');
+const knex = require('knex');
+const { parse } = require('dotenv');
+require('dotenv').config();
 
-const stakeholder_model = require('./relacoesJean')
-
-// middleware que permite que o express receba requests com cargas de json
-app.use(express.json())
-// middleware que faz com que o Express permita requests do React
-app.use(function (req, res, next) {
-	res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-	res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
-	next();
+const db = knex({
+	client: 'pg',
+	connection: {
+		host: process.env.DATABASE_HOST,
+		user: process.env.DATABASE_USERNAME,
+		password: process.env.DATABASE_PASSWORD,
+		database: process.env.DATABASE,
+	},
 });
 
-// Responde com todos os dados da tabela de relações quando alguém manda 
-// uma requisição GET
+const app = express();
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
+// usando cors para não ter um erro quando tentamos acessar o servidor
+// de uma localização diferente da do servidor
+app.use(cors());
+
+// GET: buscando nome e cargo de todos os stakeholders
 app.get('/', (req, res) => {
-	stakeholder_model.getRelacoes()
-		.then(response => {
-			res.status(200).send(response);
+	db.select('shnome', 'shcargo', 'shpartido', 'shrazao', 'shfotourl')
+		.from('stakeholders')
+		.then((data) => {
+			// console.log(data);
+			res.json(data);
 		})
-		.catch(error => {
-			res.status(500).send(error);
-		})
+		.catch((error) => {
+			// console.log(error);
+		});
+});
+
+// GET: busca as relacoes para um stakeholder na base
+app.get('/relacoes', (req, res) => {
+	const stakeholderId = req.params.stakeholderId;
+	db.raw("SELECT sh1.shnome AS stakeholder, sh2.shnome AS relacionado_a FROM relacoes AS r JOIN stakeholders AS sh1 ON r.shid = sh1.shid JOIN stakeholders AS sh2 ON r.temrelacaoshid = sh2.shid")
+	// db.select('sh1.nome as stakeholder', 'sh2.nome as relacionado_a')
+	// 	.from('relacoes as r')
+	// 	.join('stakeholders as sh1 on r.shid = sh1.shid')
+	// 	.join('stakeholders as sh2 on r.temrelacaoshid')
+		.then((data) => {
+            // console.log(data);
+            res.json(data);
+        })
+        .catch((err) => {
+            // console.log(err);
+        });
 })
 
-// Adiciona um stakeholder na tabela quando recebe uma requisição POST
-app.post('/stakeholders', (req, res) => {
-	stakeholder_model.adicionaStakeholder(req.body)
-		.then(response => {
-			res.status(200).send(response);
+// POST: adiciona stakeholders na base
+app.post('/adiciona-sh', (req, res) => {
+	const parsed = JSON.parse(Object.keys(req.body)[0])
+	const { nome, cargo, razao, partido } = parsed;
+	db('stakeholders')
+		.insert({
+			shnome: nome,
+			shcargo: cargo,
+			shfotourl: 'a',
+			shrazao: razao,
+			shpartido: partido
 		})
-		.catch(error => {
-			res.status(500).send(error);
+		.then(() => {
+			// console.log('stakeholder adicionado');
+			return res.json({ msg: 'stakeholder adicionado' });
 		})
-})
+		.catch((error) => {
+			// console.log(error);
+		});
+});
 
-// Remove stakeholder da tabelha quando recbe uma requisição GET
-app.delete('/stakeholders/:id', (req, res) => {
-	removeStakeholder.deleteMerchant(req.params.id)
-		.then(response => {
-			res.status(200).send(response);
-		})
-		.catch(error => {
-			res.status(500).send(error);
-		})
-})
+// DELETE: deleta stakeholder pelo seu id
+app.delete('/deleta-sh', (req, res) => {
+	const parsed = JSON.parse(Object.keys(req.body)[0])
+	const { nome } = parsed
+	// const shNome = req.body;
+	// const nome = shNome.shnome;
+	console.log("nome: ")
+	console.log(nome)
 
-// Faz com que o servidor entre em modo de listening. Quando o servidor
-// inicia, printa a mensagem definida em console.log.
-app.listen(port, () => {
-	console.log('App running on port: ' + port);
-})
+	db('stakeholders')
+		.where('shnome', '=', nome)
+		.del()
+		.then(() => {
+            console.log('Stakeholder excluído');
+            return res.json({ msg: 'Stakeholder excluído' });
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Server running on port ${port}, http://localhost:${port}`));

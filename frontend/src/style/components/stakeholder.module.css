@@ -1,0 +1,31 @@
+.stakeholderCard{
+	width: 45%;
+	min-height: 300px;
+	height: auto;
+
+	box-sizing: border-box;
+
+	text-align: center;
+	
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	align-items: center;
+
+	padding: 1% 5%;
+
+	border: 2px solid black;
+	border-radius: 12px;
+
+	background-color: #fafafa;
+}
+
+.texto h4{
+	font-weight: bold;
+
+	font-size: 20px;
+}
+
+.texto p{
+	font-size: 15px;
+}
