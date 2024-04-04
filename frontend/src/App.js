@@ -9,7 +9,7 @@ function App() {
     <div className="main-content">
       <PaginaSh />
 
-      <OutrasRelacoes />
+      {/* <OutrasRelacoes /> */}
 
       <h2>
         Adiciona Stakeholders
