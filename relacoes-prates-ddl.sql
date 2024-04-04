@@ -1,0 +1,19 @@
+CREATE TABLE Stakeholders
+(
+	ShId SERIAL PRIMARY KEY,
+	ShNome VARCHAR(100) NOT NULL,
+	ShCargo VARCHAR(400) NOT NULL,
+	ShFotoUrl TEXT NOT NULL,
+	ShRazao TEXT NOT NULL,
+	ShPartido VARCHAR(50)
+);
+
+CREATE TABLE Relacoes
+(
+	RelacaoId SERIAL PRIMARY KEY,
+	ShId INT NOT NULL,
+	TemRelacaoShId INT NOT NULL,
+	FOREIGN KEY (ShId) REFERENCES Stakeholders(ShId),
+	FOREIGN KEY (TemRelacaoShId) REFERENCES Stakeholders(ShId)
+);
+
