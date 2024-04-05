@@ -35,7 +35,7 @@ export default function FormDelete() {
 
 		removeStakeholder(nome)
 
-		notify(false, "Enviado")
+		notify(false, "Requisição enviada")
 	}
 
 	const notify = (erro, mensagem) => {

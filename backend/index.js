@@ -57,6 +57,7 @@ app.get('/relacoes', (req, res) => {
 app.post('/adiciona-sh', (req, res) => {
 	const parsed = JSON.parse(Object.keys(req.body)[0])
 	const { nome, cargo, razao, partido } = parsed;
+
 	db('stakeholders')
 		.insert({
 			shnome: nome,

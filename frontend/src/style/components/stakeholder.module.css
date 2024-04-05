@@ -1,6 +1,6 @@
 .stakeholderCard{
-	width: 45%;
-	min-height: 300px;
+	width: 22.5%;
+	min-height: 700px;
 	height: auto;
 
 	box-sizing: border-box;
@@ -12,7 +12,7 @@
 	justify-content: space-around;
 	align-items: center;
 
-	padding: 1% 5%;
+	padding: 1% 1%;
 
 	border: 2px solid black;
 	border-radius: 12px;
@@ -20,12 +20,30 @@
 	background-color: #fafafa;
 }
 
-.texto h4{
-	font-weight: bold;
+.fotoContainer{
+	width: 90%;
+	height: 25%;
+	padding: 1%;
+	padding: 1.5%;
 
-	font-size: 20px;
+	box-sizing: border-box;
 }
 
-.texto p{
-	font-size: 15px;
+.fotoContainer img{
+	max-width: 100%;
+	height: auto;
+
+	border-radius: 50%;
+}
+
+.textoContainer h4{
+	font-weight: bold;
+
+	font-size: 23px;
+
+	margin: 0px;
+}
+
+.textoContainer p{
+	font-size: 19px;
 }

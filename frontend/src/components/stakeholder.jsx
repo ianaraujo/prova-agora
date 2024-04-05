@@ -1,9 +1,14 @@
 import styles from '../style/components/stakeholder.module.css';
+import fotoPlaceholder from '../images/pessoa.jpeg';
 
 export default function Stakeholder({ nome, partido, cargo, relacao}) {
 	return (
 		<div className={styles.stakeholderCard}>
-			<div className={styles.texto}>
+			<div className={styles.fotoContainer}>
+				<img src={fotoPlaceholder} />
+			</div>
+			
+			<div className={styles.textoContainer}>
 				<h4>
 					Nome
 				</h4>
@@ -12,7 +17,7 @@ export default function Stakeholder({ nome, partido, cargo, relacao}) {
 				</p>
 			</div>
 
-			<div className={styles.texto}>
+			<div className={styles.textoContainer}>
 				<h4>
 					Cargo
 				</h4>
@@ -21,7 +26,7 @@ export default function Stakeholder({ nome, partido, cargo, relacao}) {
 				</p>
 			</div>
 
-			<div className={styles.texto}>
+			<div className={styles.textoContainer}>
 				<h4>
 					Relação com Jean Prates
 				</h4>
