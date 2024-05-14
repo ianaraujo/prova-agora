@@ -8,6 +8,7 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_DB: daniel
       POSTGRES_USER: daniel
       POSTGRES_PASSWORD: root
     volumes:
@@ -26,5 +27,7 @@ services:
     container_name: api
     ports:
       - "5000:5000"
+    depends_on:
+      - database
 
 
